@@ -11,7 +11,7 @@ import numpy as np
 from scipy import stats
 import sympy as sym
 
-import inputs
+from .. import inputs
 
 # define a valid cdf expression
 valid_var, mu, sigma = sym.var('x, mu, sigma')
