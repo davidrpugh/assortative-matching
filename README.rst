@@ -23,7 +23,7 @@ Python package for solving assortative matching models with two-sided heterogene
 Installation
 ------------
 
-Assuming you have `pip`_ on your computer (as will be the case if you've `installed Anaconda`_) you can install the latest stable release of ``pycollocation`` by typing
+Assuming you have `pip`_ on your computer (as will be the case if you've `installed Anaconda`_) you can install the latest stable release of ``pyam`` by typing
     
 .. code:: bash
 
