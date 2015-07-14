@@ -6,10 +6,11 @@ Classes for modeling assortative matching boundary value problems.
 
 """
 from __future__ import division
+import sympy as sym
 
 from pycollocation import SymbolicTwoPointBVPLike
 
-from model import AssortativeMatchingModelLike
+from . model import AssortativeMatchingModelLike
 
 
 class AssortativeMatchingProblem(AssortativeMatchingModelLike, SymbolicTwoPointBVPLike):
