@@ -27,7 +27,7 @@ Assuming you have `pip`_ on your computer (as will be the case if you've `instal
     
 .. code:: bash
 
-    pip install pycollocation
+    pip install pyam
 
 at a terminal prompt.
 
