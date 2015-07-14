@@ -1,6 +1,14 @@
+"""
+Classes for building assortative matchign models with heterogenous factors of
+production.
+
+@author : David R. Pugh
+@date : 2015-01-24
+
+"""
 import sympy as sym
 
-import inputs
+from . import inputs
 
 
 class AssortativeMatchingModelLike(object):

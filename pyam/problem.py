@@ -1,3 +1,12 @@
+"""
+Classes for modeling assortative matching boundary value problems.
+
+@author : David R. Pugh
+@date : 2015-07-14
+
+"""
+from __future__ import division
+
 from pycollocation import SymbolicTwoPointBVPLike
 
 from model import AssortativeMatchingModelLike
