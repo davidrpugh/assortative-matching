@@ -15,5 +15,7 @@ pyAM
    :target: https://pypi.python.org/pypi/pyAM/
 .. |Downloads| image:: https://img.shields.io/pypi/dm/pyAM.svg
    :target: https://pypi.python.org/pypi/pyAM/
+.. |DOI| image:: https://zenodo.org/badge/doi/10.5281/zenodo.20223.svg   
+   :target: http://dx.doi.org/10.5281/zenodo.20223
 
 Python package for solving assortative matching models with two-sided heterogeneity.
