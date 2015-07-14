@@ -1,7 +1,7 @@
 pyAM
 ====
 
-|Build Status| |Coverage Status| |Codacy Badge| |Latest Version| |Downloads| |DOI|
+|Build Status| |Coverage Status| |Codacy Badge| |GitHub License| |Latest Version| |Downloads| |DOI|
 
 .. |Build Status| image:: https://travis-ci.org/davidrpugh/pyAM.svg?branch=master
    :target: https://travis-ci.org/davidrpugh/pyAM
@@ -9,6 +9,8 @@ pyAM
    :target: https://coveralls.io/github/davidrpugh/pyAM?branch=master
 .. |Codacy Badge| image:: https://www.codacy.com/project/badge/f051d7b5ccce47cfa3d6907c9a1bd6bf
    :target: https://www.codacy.com/app/drobert-pugh/pyAM
+.. |GitHub license| image:: https://img.shields.io/github/license/davidrpugh/pyAM.svg
+   :target: https://img.shields.io/github/license/davidrpugh/pyAM.svg
 .. |Latest Version| image:: https://img.shields.io/pypi/v/pyAM.svg
    :target: https://pypi.python.org/pypi/pyAM/
 .. |Downloads| image:: https://img.shields.io/pypi/dm/pyAM.svg
