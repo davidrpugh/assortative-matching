@@ -33,3 +33,7 @@ at a terminal prompt.
 
 .. _pip: https://pypi.python.org/pypi/pip
 .. _`installed Anaconda`: http://quant-econ.net/getting_started.html#installing-anaconda
+
+Example notebooks
+-----------------
+At the moment there are two example notebooks, one for [positive assortative matching](https://github.com/davidrpugh/pyAM/blob/master/examples/positive-assortative-matching.ipynb) and one for [negative assortative matching](https://github.com/davidrpugh/pyAM/blob/master/examples/negative-assortative-matching.ipynb), in the `examples` directory.  The positive assortative matching works fine; the negative assortative matching, however, does not yet work (I suspect because of a poor algorithm for the initial guess).

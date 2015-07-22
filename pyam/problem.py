@@ -76,6 +76,39 @@ class AssortativeMatchingProblem(AssortativeMatchingModelLike, SymbolicTwoPointB
         return sym.diff(self.F, self.input1.var)
 
     @property
+    def Fy(self):
+        """
+        Symbolic expression for the marginal product of input2.
+
+        :getter: Return the the marginal product of input2.
+        :type: sympy.Basic
+
+        """
+        return sym.diff(self.F, self.input2.var)
+
+    @property
+    def Fl(self):
+        """
+        Symbolic expression for the marginal product of l.
+
+        :getter: Return the the marginal product of l.
+        :type: sympy.Basic
+
+        """
+        return sym.diff(self.F, self._required_symbols[0])
+
+    @property
+    def Fr(self):
+        """
+        Symbolic expression for the marginal product of r.
+
+        :getter: Return the the marginal product of r.
+        :type: sympy.Basic
+
+        """
+        return sym.diff(self.F, self._required_symbols[1])
+
+    @property
     def Fxy(self):
         """
         Symbolic expression for the cross-partial derivative.
@@ -87,7 +120,7 @@ class AssortativeMatchingProblem(AssortativeMatchingModelLike, SymbolicTwoPointB
         return sym.diff(self.F, self.input1.var, self.input2.var)
 
     @property
-    def Flr(self):
+    def Fxl(self):
         """
         Symbolic expression for the cross-partial derivative.
 
@@ -95,7 +128,7 @@ class AssortativeMatchingProblem(AssortativeMatchingModelLike, SymbolicTwoPointB
         :type: sympy.Basic
 
         """
-        return sym.diff(self.F, *self._required_symbols)
+        return sym.diff(self.F, self.input1.var, self._required_symbols[0])
 
     @property
     def Fxr(self):
@@ -118,6 +151,28 @@ class AssortativeMatchingProblem(AssortativeMatchingModelLike, SymbolicTwoPointB
 
         """
         return sym.diff(self.F, self.input2.var, self._required_symbols[0])
+
+    @property
+    def Fyr(self):
+        """
+        Symbolic expression for the cross-partial derivative.
+
+        :getter: Return the expression for the cross-partial derivative.
+        :type: sympy.Basic
+
+        """
+        return sym.diff(self.F, self.input2.var, self._required_symbols[1])
+
+    @property
+    def Flr(self):
+        """
+        Symbolic expression for the cross-partial derivative.
+
+        :getter: Return the expression for the cross-partial derivative.
+        :type: sympy.Basic
+
+        """
+        return sym.diff(self.F, *self._required_symbols)
 
     @property
     def H(self):
