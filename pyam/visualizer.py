@@ -10,6 +10,8 @@ class Visualizer(pycollocation.Visualizer):
 
     __partials = ['F', 'Fx', 'Fy', 'Fl', 'Fr']
 
+    __solution = None
+
     @property
     def _complementarities(self):
         """Dictionary mapping a complementarity to a callable function."""
@@ -43,17 +45,20 @@ class Visualizer(pycollocation.Visualizer):
     @property
     def _solution(self):
         """Return the solution stored as a dict of NumPy arrays."""
-        tmp = super(Visualizer, self)._solution
+        if self.__solution is None:
+            tmp = super(Visualizer, self)._solution
 
-        # list of tuples!
-        derivatives = (self._complementarities.items() + self._partials.items() +
-                       self._factor_payments.items())
+            # list of tuples!
+            derivatives = (self._complementarities.items() + self._partials.items() +
+                           self._factor_payments.items())
 
-        for derivative, function in derivatives:
-            values = function(self.interpolation_knots,
-                              tmp['mu'].values,
-                              tmp['theta'].values,
-                              *self.solver.problem.params.values())
-            tmp[derivative] = pd.Series(values, index=self.interpolation_knots)
+            for derivative, function in derivatives:
+                values = function(self.interpolation_knots,
+                                  tmp['mu'].values,
+                                  tmp['theta'].values,
+                                  *self.solver.problem.params.values())
+                tmp[derivative] = pd.Series(values, index=self.interpolation_knots)
 
-        return tmp
+            self.__solution = tmp
+
+        return self.__solution
