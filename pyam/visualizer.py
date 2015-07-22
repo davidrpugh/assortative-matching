@@ -21,6 +21,16 @@ class Visualizer(pycollocation.Visualizer):
         return tmp
 
     @property
+    def _factor_payments(self):
+        """Dictionary mapping a factor payment to a callable function."""
+        tmp = {}
+        for payment in ["factor_payment_1", "factor_payment_2"]:
+            expr = eval("self.solver.problem." + payment)
+            tmp[payment] = self.solver.problem._lambdify_factory(expr)
+
+        return tmp
+
+    @property
     def _partials(self):
         """Dictionary mapping a partial derivative to a callable function."""
         tmp = {}
@@ -36,7 +46,8 @@ class Visualizer(pycollocation.Visualizer):
         tmp = super(Visualizer, self)._solution
 
         # list of tuples!
-        derivatives = self._complementarities.items() + self._partials.items()
+        derivatives = (self._complementarities.items() + self._partials.items() +
+                       self._factor_payments.items())
 
         for derivative, function in derivatives:
             values = function(self.interpolation_knots,
