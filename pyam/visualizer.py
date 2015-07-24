@@ -62,3 +62,40 @@ class Visualizer(pycollocation.Visualizer):
             self.__solution = tmp
 
         return self.__solution
+
+    @property
+    def theta_cdf(self):
+        """
+        Cumulative distribution function (cdf) for theta.
+
+        :getter: Return the current cdf.
+        :type: pandas.Series
+
+        """
+        return self.theta_pdf.cumsum() / self.theta_pdf.sum()
+
+    @property
+    def theta_pdf(self):
+        """
+        Probability density function (pdf) for theta.
+
+        :getter: Return the current pdf.
+        :type: pandas.Series
+
+        """
+        tmp_df = self.solution.sort('theta', ascending=True, inplace=False)
+        pdf = self.solver.problem.input1.evaluate_pdf(tmp_df.index.values) / tmp_df.theta
+        return pd.Series(pdf.values, index=tmp_df.theta.values)
+
+    @property
+    def theta_sf(self):
+        """
+        Survival function (sf) for theta.
+
+        :getter: Return the current sf.
+        :type: pandas.Series
+
+        """
+        return 1 - self.theta_cdf
+
+
