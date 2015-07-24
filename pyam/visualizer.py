@@ -72,7 +72,7 @@ class Visualizer(pycollocation.Visualizer):
         :type: pandas.Series
 
         """
-        return self.theta_pdf.cumsum() / self.theta_pdf.sum()
+        return self.compute_cdf(self.theta_pdf)
 
     @property
     def theta_pdf(self):
@@ -96,6 +96,16 @@ class Visualizer(pycollocation.Visualizer):
         :type: pandas.Series
 
         """
-        return 1 - self.theta_cdf
+        return self.compute_sf(self.theta_cdf)
 
+    @staticmethod
+    def compute_cdf(pdf):
+        """Compute the cdf given a pdf."""
+        cdf = pdf.cumsum() / pdf.sum()
+        return cdf
 
+    @staticmethod
+    def compute_sf(cdf):
+        """Compute the sf given the cdf."""
+        sf = 1 - cdf
+        return sf
