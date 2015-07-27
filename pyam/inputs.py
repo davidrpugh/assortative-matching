@@ -18,7 +18,7 @@ class Input(object):
 
     _modules = [{'ImmutableMatrix': np.array, 'erf': special.erf}, 'numpy']
 
-    def __init__(self, var, cdf, bounds, params):
+    def __init__(self, var, cdf, bounds, params, measure=1.0):
         """
         Create an instance of the Input class.
 
@@ -34,6 +34,8 @@ class Input(object):
             probability distribution function (CDF).
         params : dict
             Dictionary of distribution parameters.
+        measure : float
+            The measure of available units of the input.
 
         """
         self.var = var
@@ -41,6 +43,7 @@ class Input(object):
         self.lower = bounds[0]
         self.upper = bounds[1]
         self.params = params
+        self.measure = measure
 
         # initialice cached values
         self.__numeric_cdf = None
@@ -118,6 +121,23 @@ class Input(object):
 
         """
         return self.evaluate_cdf(self.upper) - self.evaluate_cdf(self.lower)
+
+    @property
+    def measure(self):
+        """
+        The measure of availale units of the input.
+
+        :getter: Return the measure.
+        :setter: Set a new measure.
+        :type: float
+
+        """
+        return self._measure
+
+    @measure.setter
+    def measure(self, value):
+        """Set a new lower bound."""
+        self._measure = self._validate_measure(value)
 
     @property
     def params(self):
@@ -205,6 +225,18 @@ class Input(object):
             return value
 
     @staticmethod
+    def _validate_measure(value):
+        """Validate the measure of available input."""
+        if not isinstance(value, float):
+            mesg = "Attribute 'measure' must be a float, not {}"
+            raise AttributeError(mesg.format(value.__class__))
+        elif value < 0:
+            mesg = "Attribute 'measure' attribute must be strictly positive."
+            raise AttributeError(mesg)
+        else:
+            return value
+
+    @staticmethod
     def _validate_params(value):
         """Validate the dictionary of parameters."""
         if not isinstance(value, dict):
@@ -232,7 +264,7 @@ class Input(object):
 
     def evaluate_cdf(self, value):
         """
-        Numerically evaluate the probability distribution function (CDF).
+        Numerically evaluate the cumulative distribution function (CDF).
 
         Parameters
         ----------
