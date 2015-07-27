@@ -64,6 +64,90 @@ class Visualizer(pycollocation.Visualizer):
         return self.__solution
 
     @property
+    def _soln_with_theta_frequency(self):
+        """Solution including the density for theta."""
+        tmp_df = self.solution.sort('theta', ascending=True, inplace=False)
+        tmp_df['theta_frequency'] = self.solver.problem.input1.evaluate_pdf(tmp_df.index.values) / tmp_df.theta
+        return tmp_df
+
+    @property
+    def factor_payment_1_cdf(self):
+        """
+        Cumulative distribution function (cdf) for factor payments to input 1.
+
+        :getter: Return the current cdf.
+        :type: pandas.Series
+
+        """
+        return self.compute_cdf(self.factor_payment_1_pdf)
+
+    @property
+    def factor_payment_1_pdf(self):
+        """
+        Probability density function (pdf) for factor payments to input 1.
+
+        :getter: Return the current pdf.
+        :type: pandas.Series
+
+        """
+        tmp_df = self._soln_with_theta_frequency.sort('factor_payment_1',
+                                                      ascending=True,
+                                                      inplace=False)
+        # frequency measured in number of units of input 1!
+        frequency = tmp_df.theta.values * tmp_df.theta_frequency.values
+        value = tmp_df.factor_payment_1.values
+        return pd.Series(frequency, index=value)
+
+    @property
+    def factor_payment_1_sf(self):
+        """
+        Survival function (sf) for factor payments to input 1.
+
+        :getter: Return the current sf.
+        :type: pandas.Series
+
+        """
+        return self.compute_sf(self.factor_payment_1_cdf)
+
+    @property
+    def factor_payment_2_cdf(self):
+        """
+        Cumulative distribution function (cdf) for factor payments to input 2.
+
+        :getter: Return the current cdf.
+        :type: pandas.Series
+
+        """
+        return self.compute_cdf(self.factor_payment_2_pdf)
+
+    @property
+    def factor_payment_2_pdf(self):
+        """
+        Probability density function (pdf) for factor payments to input 2.
+
+        :getter: Return the current pdf.
+        :type: pandas.Series
+
+        """
+        tmp_df = self._soln_with_theta_frequency.sort('factor_payment_2',
+                                                      ascending=True,
+                                                      inplace=False)
+        frequency = tmp_df.theta_frequency.values
+        value = tmp_df.factor_payment_2.values
+        return pd.Series(frequency, index=value)
+
+    @property
+    def factor_payment_2_sf(self):
+        """
+        Survival function (sf) for factor payments to input 2.
+
+        :getter: Return the current sf.
+        :type: pandas.Series
+
+        """
+        return self.compute_sf(self.factor_payment_2_cdf)
+
+    @property
     def theta_cdf(self):
         """
         Cumulative distribution function (cdf) for theta.
@@ -83,9 +167,10 @@ class Visualizer(pycollocation.Visualizer):
         :type: pandas.Series
 
         """
-        tmp_df = self.solution.sort('theta', ascending=True, inplace=False)
-        pdf = self.solver.problem.input1.evaluate_pdf(tmp_df.index.values) / tmp_df.theta
-        return pd.Series(pdf.values, index=tmp_df.theta.values)
+        tmp_df = self._soln_with_theta_frequency
+        frequency = tmp_df.theta_frequency.values
+        value = tmp_df.theta.values
+        return pd.Series(frequency, index=value)
 
     @property
     def theta_sf(self):
