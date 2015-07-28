@@ -27,12 +27,46 @@ Assuming you have `pip`_ on your computer (as will be the case if you've `instal
     
 .. code:: bash
 
-    pip install pyam
+    $ pip install pyam
 
 at a terminal prompt.
 
 .. _pip: https://pypi.python.org/pypi/pip
 .. _`installed Anaconda`: http://quant-econ.net/getting_started.html#installing-anaconda
+
+Contributing
+------------
+If you wish to contribute to the project you will likely want to install from source. First your will need to fork and then clone the source repository.
+
+.. code:: bash
+
+    $ git clone https://github.com/YOUR-USERNAME/pyAM.git 
+
+Next create a new `conda` development environment 
+
+.. code:: bash
+    
+    $ conda create -n pyam-dev python anaconda
+
+activate the newly created development environment
+
+.. code:: bash
+
+    $ source activate pyam-dev
+
+and install additional dependencies not available within Anaconda.
+
+.. code:: bash
+
+    $ pip install pycollocation
+    $ pip install seaborn
+
+Finally, change into your local clone of the `pyam` source directory and install the package in development mode.
+
+.. code:: bash
+
+    $ pip install -e .
+
 
 Example notebooks
 -----------------
