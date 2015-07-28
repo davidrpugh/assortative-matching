@@ -2,7 +2,7 @@
 Classes for modeling heterogenous factors of production.
 
 @author : David R. Pugh
-@date : 2015-01-24
+@date : 2015-07-28
 
 """
 from __future__ import division
@@ -39,11 +39,11 @@ class Input(object):
 
         """
         self.var = var
+        self.measure = measure  # needs to be assigned before cdf is set!
         self.cdf = cdf
         self.lower = bounds[0]
         self.upper = bounds[1]
         self.params = params
-        self.measure = measure
 
         # initialice cached values
         self.__numeric_cdf = None
@@ -92,7 +92,7 @@ class Input(object):
     @cdf.setter
     def cdf(self, value):
         """Set a new probability distribution function (CDF)."""
-        self._cdf = self._validate_cdf(value)
+        self._cdf = self._validate_cdf(self.measure * value)  # rescale cdf!
 
     @property
     def lower(self):

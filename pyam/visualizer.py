@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 import pycollocation
@@ -73,7 +74,8 @@ class Visualizer(pycollocation.Visualizer):
     @staticmethod
     def compute_cdf(pdf):
         """Compute the cumulative distribution function (cdf) given a pdf."""
-        cdf = pdf.cumsum() / pdf.sum()
+        values = np.array([np.trapz(pdf.iloc[:x], pdf.index[:x]) for x in xrange(pdf.size)])
+        cdf = pd.Series(values, index=pdf.index.values)
         return cdf
 
     @staticmethod
@@ -82,9 +84,16 @@ class Visualizer(pycollocation.Visualizer):
         sf = 1 - cdf
         return sf
 
-    def compute_pdf(self, variable):
+    def compute_pdf(self, variable, normalize=True):
         """Compute the probability density function (pdf) for some variable."""
         tmp_df = self.solution.sort(variable, ascending=True, inplace=False)
         tmp_df['theta_frequency'] = self._theta_frequency()
-        pdf = pd.Series(tmp_df.theta_frequency.values, index=tmp_df[variable].values)
+
+        if normalize:
+            area = np.trapz(tmp_df.theta_frequency, tmp_df[variable])  # normalize by area!
+            density = tmp_df.theta_frequency / area
+            pdf = pd.Series(density.values, index=tmp_df[variable].values)
+        else:
+            pdf = pd.Series(tmp_df.theta_frequency.values, index=tmp_df[variable].values)
+
         return pdf
