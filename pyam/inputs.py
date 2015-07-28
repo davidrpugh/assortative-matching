@@ -100,7 +100,7 @@ class Input(object):
     @cdf.setter
     def cdf(self, value):
         """Set a new probability distribution function (CDF)."""
-        self._cdf = self._validate_cdf(self.measure * value)  # rescale cdf!
+        self._cdf = self.measure * self._validate_cdf(value)  # rescale cdf!
 
     @property
     def lower(self):
