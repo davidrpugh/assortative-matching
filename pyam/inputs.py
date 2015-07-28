@@ -9,7 +9,7 @@ from __future__ import division
 import collections
 
 import numpy as np
-from scipy import special
+from scipy import optimize, special
 import sympy as sym
 
 
@@ -18,7 +18,11 @@ class Input(object):
 
     _modules = [{'ImmutableMatrix': np.array, 'erf': special.erf}, 'numpy']
 
-    def __init__(self, var, cdf, bounds, params, measure=1.0):
+    __numeric_cdf = None
+
+    __numeric_pdf = None
+
+    def __init__(self, var, cdf, bounds, params, alpha=None, measure=1.0):
         """
         Create an instance of the Input class.
 
@@ -29,11 +33,13 @@ class Input(object):
         cdf : sym.Basic
             Symbolic expression defining a valid probability distribution
             function (CDF). Must be a function of var.
-        bounds : list
-            List containing the lower and upper bounds on the support of the
-            probability distribution function (CDF).
+        bounds : (float, float)
+            Tuple of floats that should bracket the desired quantile, alpha.
         params : dict
             Dictionary of distribution parameters.
+        alpha : float, optional (default=None)
+            Quantile defining the lower bound on the support of the cumulative
+            distribution function.
         measure : float
             The measure of available units of the input.
 
@@ -41,13 +47,15 @@ class Input(object):
         self.var = var
         self.measure = measure  # needs to be assigned before cdf is set!
         self.cdf = cdf
-        self.lower = bounds[0]
-        self.upper = bounds[1]
         self.params = params
 
-        # initialice cached values
-        self.__numeric_cdf = None
-        self.__numeric_pdf = None
+        # set (or find!) the desired bounds
+        if alpha is None:
+            self.lower = bounds[0]
+            self.upper = bounds[1]
+        else:
+            self.lower = self._find_bound(alpha * self.measure, *bounds)
+            self.upper = self._find_bound((1 - alpha) * self.measure, *bounds)
 
     @property
     def _numeric_cdf(self):
@@ -216,14 +224,6 @@ class Input(object):
         else:
             return cdf
 
-    def _validate_lower_bound(self, value):
-        """Validate the lower bound on the suppport of the CDF."""
-        if not isinstance(value, float):
-            mesg = "Attribute 'lower' must have type float, not {}"
-            raise AttributeError(mesg.format(value.__class__))
-        else:
-            return value
-
     @staticmethod
     def _validate_measure(value):
         """Validate the measure of available input."""
@@ -245,14 +245,6 @@ class Input(object):
         else:
             return value
 
-    def _validate_upper_bound(self, value):
-        """Validate the upper bound on the suppport of the CDF."""
-        if not isinstance(value, float):
-            mesg = "Attribute 'upper' must have type float, not {}"
-            raise AttributeError(mesg.format(value.__class__))
-        else:
-            return value
-
     @staticmethod
     def _validate_var(var):
         """Validates the symbolic variable."""
@@ -261,6 +253,30 @@ class Input(object):
             raise AttributeError(mesg.format(var.__class__))
         else:
             return var
+
+    def _validate_upper_bound(self, value):
+        """Validate the upper bound on the suppport of the CDF."""
+        if not isinstance(value, float):
+            mesg = "Attribute 'upper' must have type float, not {}"
+            raise AttributeError(mesg.format(value.__class__))
+        else:
+            return value
+
+    def _find_bound(self, alpha, lower, upper):
+        """Find the alpha quantile of the CDF."""
+        return optimize.bisect(self._inverse_cdf, lower, upper, args=(alpha,))
+
+    def _inverse_cdf(self, x, alpha):
+        """Inverse CDF used to identify the lower and upper bounds."""
+        return self.evaluate_cdf(x) - alpha
+
+    def _validate_lower_bound(self, value):
+        """Validate the lower bound on the suppport of the CDF."""
+        if not isinstance(value, float):
+            mesg = "Attribute 'lower' must have type float, not {}"
+            raise AttributeError(mesg.format(value.__class__))
+        else:
+            return value
 
     def evaluate_cdf(self, value):
         """
