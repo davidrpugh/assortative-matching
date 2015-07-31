@@ -10,9 +10,8 @@ import unittest
 import numpy as np
 import sympy as sym
 
-import inputs
-import models
-import shooting
+from .. import inputs
+from .. import models
 
 
 class MultiplicativeSeparabilityCase(unittest.TestCase):

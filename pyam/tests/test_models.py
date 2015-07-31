@@ -10,8 +10,8 @@ import nose
 import sympy as sym
 from scipy import stats
 
-import inputs
-import models
+from .. import inputs
+from .. import model
 
 # define endogenous variables
 mu, theta = sym.var('mu, theta')
