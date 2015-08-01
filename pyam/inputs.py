@@ -88,7 +88,7 @@ class Input(object):
     @property
     def cdf(self):
         """
-        Probability distribution function (CDF).
+        Cumulative distribution function (CDF).
 
         :getter: Return the current distribution function.
         :setter: Set a new distribution function.
@@ -99,13 +99,13 @@ class Input(object):
 
     @cdf.setter
     def cdf(self, value):
-        """Set a new probability distribution function (CDF)."""
+        """Set a new cumulative distribution function (CDF)."""
         self._cdf = self.measure * self._validate_cdf(value)  # rescale cdf!
 
     @property
     def lower(self):
         """
-        Lower bound on support of the probability distribution function (CDF).
+        Lower bound on support of the cumulative distribution function (CDF).
 
         :getter: Return the lower bound.
         :setter: Set a new lower bound.
@@ -179,7 +179,7 @@ class Input(object):
     @property
     def upper(self):
         """
-        Upper bound on support of the probability distribution function (CDF).
+        Upper bound on support of the cumulative distribution function (CDF).
 
         :getter: Return the lower bound.
         :setter: Set a new lower bound.
