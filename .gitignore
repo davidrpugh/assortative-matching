@@ -25,5 +25,6 @@ pycollocation.egg-info
 # ignore docs/build
 docs/build
 
-# ignore MANIFEST
-MANIFEST
+# ignore all data files
+examples/data
+examples/qwi.sqlite
